@@ -1,0 +1,54 @@
+
+emdns is a cleverly named implementation of the multicast DNS (aka
+Bonjour, aka ZeroConf) and DNS-SD (DNS Service Discovery) protocols
+for Erlang.
+
+Eventually, it will support:
+
+    http://files.multicastdns.org/draft-cheshire-dnsext-multicastdns.txt
+
+
+BUILD
+
+make
+
+
+QUICK START
+
+Assume you have two hosts "nul" and "ack". Any multicast DNS services
+are disabled on "nul". "ack" runs Mac OS X.
+
+Host Entry
+
+1. Login to "ack". From a shell, run:
+
+$ ping nul.local
+ping: unknown host nul.local
+
+2. On "nul", start erl:
+
+$ erl -pa ebin
+> emdns_server:start().
+{ok,<0.35.0>}
+> emdns_server:debug(true).
+ok
+> A = emdns:service(host). % assumes "nul" has a reverse DNS entry
+<<0,0,132,...>>
+> emdns_server:send(A).
+ok
+
+3. On "ack", run:
+
+$ ping nul.local
+PING nul.local (192.168.1.10): 56 data bytes
+64 bytes from 192.168.1.10: icmp_seq=0 ttl=64 time=4.471 ms
+64 bytes from 192.168.1.10: icmp_seq=1 ttl=64 time=2.611 ms
+
+4. Set up a DAAP service 
+
+> D = emdns:service(daap).
+> emdns_server:send(D).
+
+5. On "ack", in iTunes, check "Devices" for a entry named "erlMOTE".
+
+
