@@ -132,7 +132,7 @@ handle_info({udp, Socket, IP, InPortNo, Packet},
         false ->
             ok
     end,
-    [ Pid ! {emdns, IP, InPortNo, Packet} || Pid <- Registered ],
+    [ Pid ! {mdns, IP, InPortNo, Packet} || Pid <- Registered ],
     {noreply, State};
 handle_info({'DOWN', MonitorRef, process, _Object, _Info}, #state{r = Registered} = State) ->
     {noreply, State#state{r = Registered -- MonitorRef}};
