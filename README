@@ -49,6 +49,6 @@ PING nul.local (192.168.1.10): 56 data bytes
 > D = emdns:service(daap).
 > emdns_server:send(D).
 
-5. On "ack", in iTunes, check "Devices" for a entry named "erlMOTE".
+5. On "ack", in iTunes, check "Devices" for an entry named "erlMOTE".
 
 

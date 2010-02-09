@@ -86,7 +86,7 @@ type({srv, L}) when is_list(L) ->
                 type = srv,
                 class = Class,
                 ttl = TTL,
-                data = {0,0,1024,"nul.local"}
+                data = {0,0,1024,Domain}
             };
         _ ->
             {err, fmt}
@@ -169,7 +169,6 @@ service(host) ->
 % http://blog.mycroes.nl/2008/08/pairing-itunes-remote-app-with-your-own.html
 service(daap) ->
     Service = "0000000000000000000000000000000000000011._touch-remote._tcp.local",
-    Domain = "nul.local",
     Hostname = hostname(),
     IP = local_address(),
 
@@ -198,7 +197,7 @@ service(daap) ->
             ]}),
 
     A = type({a, [
-                {domain, Domain},
+                {domain, Hostname},
                 {class, ?CLASS_CF},
                 {data, IP}
             ]}),
