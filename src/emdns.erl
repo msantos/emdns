@@ -77,16 +77,16 @@ type({srv, L}) when is_list(L) ->
     Domain = proplists:get_value(domain, L, hostname()),
     Class = proplists:get_value(class, L, in),
     TTL = proplists:get_value(ttl, L, ?TTL_SHORT),
-    Data = proplists:get_value(data, L, hostname()),
+    Data = proplists:get_value(data, L, {0,0,3689,hostname()}),
 
     case Data of
-        {A,B,C,D} when is_integer(A), is_integer(B), is_integer(C), is_list(D) ->
+        {Priority,Weight,Port,Name} when is_integer(Priority), is_integer(Weight), is_integer(Port), is_list(Name) ->
             #dns_rr{
                 domain = Domain,
                 type = srv,
                 class = Class,
                 ttl = TTL,
-                data = {0,0,1024,Domain}
+                data = {Priority,Weight,Port,Name}
             };
         _ ->
             {err, fmt}
@@ -180,7 +180,7 @@ service(daap) ->
 
     TXT = type({txt, [
                 {domain, Service},
-                {ttl, 4500},
+                {ttl, ?TTL_LONG},
                 {data, [
                         "DvNm=erlMOTE",
                         "RemV=10000",
